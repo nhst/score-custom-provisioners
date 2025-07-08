@@ -49,7 +49,7 @@
     {{ $port := index $ports (print .Params.port) }}
     {{ if not $port.TargetPort }}{{ fail "params.port is not a named service port" }}{{ end }}
   state: |
-    routeName: route-{{ .SourceWorkload }}-{{ substr 0 8 .Guid | lower }}
+    routeName: {{ .SourceWorkload }}
   manifests: |
     - apiVersion: networking.k8s.io/v1
       kind: Ingress
