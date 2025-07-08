@@ -48,13 +48,11 @@
     {{ if not $ports }}{{ fail "no service ports exist" }}{{ end }}
     {{ $port := index $ports (print .Params.port) }}
     {{ if not $port.TargetPort }}{{ fail "params.port is not a named service port" }}{{ end }}
-  state: |
-    routeName: {{ .SourceWorkload }}
   manifests: |
     - apiVersion: networking.k8s.io/v1
       kind: Ingress
       metadata:
-        name: {{ .State.routeName }}
+        name: {{ (index .WorkloadServices .SourceWorkload).ServiceName }}
         {{ if ne .Namespace "" }}
         namespace: {{ .Namespace }}
         {{ end }}
