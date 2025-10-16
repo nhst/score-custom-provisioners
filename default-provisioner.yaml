@@ -57,7 +57,7 @@
         {{ if ne .Namespace "" }}
         namespace: {{ .Namespace }}
         {{ end }}
-        {{ if ne .Params.iprestriction }}
+        {{ if ne .Params.iprestriction "" }}
         annotations:
           ip-restriction: {{ .Params.iprestriction }}
         {{ end }}
