@@ -57,9 +57,9 @@
         {{ if ne .Namespace "" }}
         namespace: {{ .Namespace }}
         {{ end }}
-        {{ if ne .Params.iprestriction "" }}
+        {{ if ne .Params.ipRestriction "" }}
         annotations:
-          ip-restriction: {{ .Params.iprestriction }}
+          ip-restriction: {{ .Params.ipRestriction }}
         {{ end }}
       spec:
         ingressClassName: nginx
