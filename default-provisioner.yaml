@@ -41,6 +41,7 @@
     - path
     - host
     - port
+    - iprestriction
   init: |
     {{ if not (regexMatch "^/|(/([^/]+))+$" .Params.path) }}{{ fail "params.path start with a / but cannot end with /" }}{{ end }}
     {{ if not (regexMatch "^[a-z0-9_.-]{1,253}$" .Params.host) }}{{ fail (cat "params.host must be a valid hostname but was" .Params.host) }}{{ end }}
@@ -55,6 +56,10 @@
         name: {{ (index .WorkloadServices .SourceWorkload).ServiceName }}
         {{ if ne .Namespace "" }}
         namespace: {{ .Namespace }}
+        {{ end }}
+        {{ if ne .Params.iprestriction }}
+        annotations:
+          ip-restriction: {{ .Params.iprestriction }}
         {{ end }}
       spec:
         ingressClassName: nginx
