@@ -42,6 +42,7 @@
     - host
     - port
     - iprestriction
+    - env
   init: |
     {{ if not (regexMatch "^/|(/([^/]+))+$" .Params.path) }}{{ fail "params.path start with a / but cannot end with /" }}{{ end }}
     {{ if not (regexMatch "^[a-z0-9_.-]{1,253}$" .Params.host) }}{{ fail (cat "params.host must be a valid hostname but was" .Params.host) }}{{ end }}
@@ -57,9 +58,14 @@
         {{ if ne .Namespace "" }}
         namespace: {{ .Namespace }}
         {{ end }}
-        {{ if ne .Params.ipRestriction "" }}
+        {{ if or (ne .Params.ipRestriction "") (eq .Params.env "test") }}
         annotations:
+          {{ if ne .Params.ipRestriction "" }}
           ip-restriction: {{ .Params.ipRestriction }}
+          {{ end }}
+          {{ if eq .Params.env "test" }}
+          nginx.ingress.kubernetes.io/upstream-vhost: {{ .Params.host | quote }}
+          {{ end }}
         {{ end }}
       spec:
         ingressClassName: nginx
