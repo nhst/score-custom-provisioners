@@ -60,11 +60,9 @@
         {{ end }}
         {{ if or (ne .Params.ipRestriction "") (eq .Params.env "test") }}
         annotations:
+          nginx.ingress.kubernetes.io/upstream-vhost: {{ .Params.host | quote }}
           {{ if ne .Params.ipRestriction "" }}
           ip-restriction: {{ .Params.ipRestriction }}
-          {{ end }}
-          {{ if eq .Params.env "test" }}
-          nginx.ingress.kubernetes.io/upstream-vhost: {{ .Params.host | quote }}
           {{ end }}
         {{ end }}
       spec:
